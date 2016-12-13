@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: jdbc:mysql://172.16.91.60:3307/pay_center?useUnicode=true&amp;characterEncoding=utf-8
+    username: root
+    password: 123abc..
+    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    properties:
+      hibernate.memcached.servers: 172.16.91.68:11211
+  cache:
+    memecache:
+      host: 172.16.91.68
+      port: 11211
+
+#4. 快钱支付配置
+bill99:
+  port_address: 'https://www.99bill.com/webapp/services/BatchPayWS'
+  merchant:
+    key: 'TINGEZFZACWBHEU6' #商户的自动付款网关密钥
+    id: '10078812396' #商户在快钱的用户编号
+    ip: '180.169.17.47' #商户自动付款网关客户端程序所在服务器的公网 IP

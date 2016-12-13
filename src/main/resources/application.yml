@@ -1,0 +1,78 @@
+spring:
+  profiles:
+    active: pre-pro
+  main:
+    show-banner: false
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+  datasource:
+    initial-size: 1
+    max-active: 100
+    max-idle: 10
+    min-idle: 1
+    testOnBorrow: true
+    validationQuery: SELECT 1
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate.cache.region.factory_class: com.googlecode.hibernate.memcached.MemcachedRegionFactory
+      javax.persistence.sharedCache.mode: ENABLE_SELECTIVE
+      hibernate.cache.use_query_cache: true
+      hibernate.cache.use_second_level_cache: true
+      hibernate.cache.region_prefix: quality.cache.base
+      hibernate.memcached.operationTimeout: 3000
+      hibernate.use_sql_comments: true
+      hibernate.format_sql: true
+      hibernate.memcached.connectionFactory: BinaryConnectionFactory
+      hibernate.memcached.memcacheClientFactory: net.rubyeye.xmemcached.utils.hibernate.XmemcachedClientFactory
+#支付相关的配置
+#1. 支付宝支付配置
+alipay:
+  service:
+    pc: 'create_direct_pay_by_user' #pc支付时的值
+    wap: 'alipay.wap.create.direct.pay.by.user' #手机上支付时的值
+  partner: '2088711806614633' # 合作身份者ID，以2088开头由16位纯数字组成的字符串
+  seller_email: 'nancy@91baofeng.com' #卖家支付宝帐户
+  key:  'mjnvsmf98t6lv04ktaohimvrz0ajr4yh' #商户的私钥
+  input_charset: 'utf-8' #字符编码格式 目前支持 gbk 或 utf-8
+  payment_type: '1' #支付类型
+  sign_type: 'MD5' # 签名方式 不需修改
+  alipay_gateway_new: 'https://mapi.alipay.com/gateway.do?' #支付宝提供给商户的服务接入网关URL(新)
+  https_verify_url: 'https://mapi.alipay.com/gateway.do?service=notify_verify&'
+  return_url: '/rest/pay/ali/return_url' #页面跳转同步通知页面路径, 需http://格式的完整路径，不能加?id=123这类自定义参数，不能写成http://localhost/
+  notify_url: '/rest/pay/ali/notify_url'  # 服务器异步通知页面路径, 需http://格式的完整路径，不能加?id=123这类自定义参数
+
+#2. 银联在线支付配置 unionpay
+unionpay:
+  payUrl: 'https://unionpaysecure.com/api/Pay.action' #前台交易地址
+  bsPayUrl:  'https://besvr.unionpaysecure.com/api/BSPay.action' #后续类交易地址
+  queryUrl: 'https://query.unionpaysecure.com/api/Query.action' #交易信息查询地址
+  signType: 'MD5' # 加密方式
+  signTypeSHA1WithRSA: 'SHA1WithRSA'
+  securityKey: 'DFVNDIH9NJKENG7BJDVNK02WGNKD' # 商户密匙，需要和银联商户网站上配置的一样
+  version: '1.0.0' # 版本号
+  charset: 'UTF-8' # 编码方式
+  transType:
+    consume: '01' # 交易类型：消费
+    refund: '04' # 交易类型：退货
+  merId: '301310048990193' # 商户号
+  merName: '上海涟拓网络信息技术有限公司（太保E购）' # 商户名称 上海涟拓网络信息技术有限公司（太保E购）
+  merAbbr: '太保E购' # 商户名称简写 太保E购
+  orderCurrency: '156' #  交易币种(默认人民币)
+  frontEndUrl:
+    pay: '/rest/pay/union/return_url' # 支付前台回调商户URL
+    refund: '/rest/refund/union/return_url'
+  backEndUrl:
+    pay: '/rest/pay/union/notify_url' # 支付后台回调商户URL
+    refund: '/rest/refund/union/notify_url'
+
+#3.微信公众支付配置 weixinpay
+weixinpay:
+  appid: 'wxf1e1126204293c15'
+  secret: '2735e9367d8c3d4909e7af4f2e53924d'
+  mch_id: '10260436'
+  partner_key: '9d2b7c5b9143711c3d25c46fcbb32a63'
+  trade_type: 'JSAPI'
+  notify_url: '/rest/pay/weixin/notify_url' # 接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数。

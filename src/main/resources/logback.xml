@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="infoRollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${catalina.base}/logs/pay-center-info.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${catalina.base}/logs/pay-center-info.%d{yyyy-MM-dd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <appender name="errorRollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${catalina.base}/logs/pay-center-error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${catalina.base}/logs/pay-center-error.%d{yyyy-MM-dd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>WARN</level>
+        </filter>
+    </appender>
+
+    <!-- project default level -->
+    <logger name="com.laanto.it.paycenter" level="INFO"/>
+    <logger name="org.hibernate" level="INFO"/>
+    <logger name="org.springframework" level="INFO"/>
+    <logger name="net.sf" level="INFO"/>
+    <logger name="com.google" level="INFO"/>
+    <logger name="com.googlecode" level="INFO"/>
+    <logger name="org.apache" level="INFO"/>
+
+    <!--log4jdbc -->
+    <logger name="jdbc" level="OFF"/>
+    <!-- <logger name="jdbc.sqltiming" level="INFO"/> -->
+    <logger name="jdbc.sqlonly" level="INFO"/>
+
+    <root level="INFO">
+        <appender-ref ref="console"/>
+        <appender-ref ref="infoRollingFile"/>
+        <appender-ref ref="errorRollingFile"/>
+    </root>
+</configuration>
